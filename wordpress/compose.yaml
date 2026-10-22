@@ -1,0 +1,52 @@
+name: bellaaquabella
+services:
+  db:
+    image: mariadb@sha256:250e1609e93c0e6aecf64bfbab2d84d5e89d2481540fe77447ff6c855c3b1873
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: ${DB_PASSWORD:?Run scripts/setup.sh first}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Run scripts/setup.sh first}
+    volumes:
+      - database:/var/lib/mysql
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+  web:
+    image: wordpress@sha256:d42f63cb89ad0eab272c4b393164e63830d0df270009907919f7dcce52b1a20b
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - '127.0.0.1:8080:80'
+    environment: &wp_environment
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_ENVIRONMENT_TYPE', 'local');
+        define('DISALLOW_FILE_EDIT', true);
+        define('DISABLE_WP_CRON', true);
+    volumes:
+      - site:/var/www/html
+      - ./theme/bellaaquabella:/var/www/html/wp-content/themes/bellaaquabella:ro
+      - ./mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+  cli:
+    image: wordpress@sha256:661db880e953da051abcac6c0a769767b995a82cd52101c003ca7438dd427d7d
+    profiles: [tools]
+    user: '33:33'
+    environment:
+      <<: *wp_environment
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+    volumes:
+      - site:/var/www/html
+      - ./theme/bellaaquabella:/var/www/html/wp-content/themes/bellaaquabella:ro
+      - ./mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+      - ./scripts:/setup:ro
+      - ./.cache:/packages:ro
+volumes:
+  database:
+  site:

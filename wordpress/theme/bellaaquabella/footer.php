@@ -1,0 +1,1 @@
+<footer><a class="logo" href="<?php echo esc_url(home_url('/')); ?>"><?php echo bella_logo(); ?></a><p>Vše pro akvabely. S láskou k vodě.</p><small>© <?php echo esc_html(date('Y')); ?> BellaAquaBella · Vývojová verze</small></footer><?php wp_footer(); ?></body></html>
