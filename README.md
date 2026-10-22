@@ -1,6 +1,6 @@
 # BellaAquaBella / BeAqua
 
-Český responzivní prototyp e-shopu s plavkami a vybavením pro akvabely. Ukázkové produkty mají vlastní SVG ilustrace. Úvodní ilustrace bazénu je také lokální SVG. Aplikace nepotřebuje externí obrázky ani fonty.
+Český responzivní prototyp e-shopu s plavkami a vybavením pro akvabely. Ukázkové produkty mají vlastní SVG ilustrace. Úvodní banner funguje bez fotografie, s modrým a tyrkysovým pozadím. Fonty jsou uložené lokálně; aplikace nepotřebuje externí obrázky ani fontové služby.
 
 ## Vývoj
 
