@@ -39,5 +39,8 @@ docker compose run --rm -T cli plugin activate woocommerce
 docker compose run --rm -T cli plugin is-installed woocommerce-gateway-stripe || docker compose run --rm -T cli plugin install /packages/woocommerce-gateway-stripe-11.1.1.zip --activate
 docker compose run --rm -T cli plugin activate woocommerce-gateway-stripe
 docker compose run --rm -T cli eval-file /setup/catalog.php
+if [ "$(docker compose run --rm -T cli option get bella_catalog_v2 2>/dev/null || true)" != 'yes' ]; then
+  docker compose run --rm -T cli eval-file /setup/sync-demo-catalog.php
+fi
 curl --fail --silent http://127.0.0.1:8080/ -o /dev/null
 printf 'Local WordPress ready. Admin username: shopowner. Password is only in wordpress/.env.\n'

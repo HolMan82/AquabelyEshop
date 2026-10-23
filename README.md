@@ -19,7 +19,7 @@ npm run build
 npm run preview -- --port 4173
 ```
 
-Funguje filtrování, hledání, řazení, detail produktu, výběr velikosti a košík uložený v prohlížeči. Statická ukázka neodesílá osobní údaje. Produkty, ceny a texty jsou návrhové. Prototyp nepřijímá objednávky ani platby a není připravený pro ostrý prodej.
+Aktuální návrh má 12 ukázkových produktů. Funguje hledání, kategorie, filtry typu, barvy a ceny, řazení, oblíbené produkty, detail s velikostmi a množstvím, přepínání bannerů a boční košík uložený v prohlížeči. Na úvodu je šest doporučených produktů; tlačítko Zobrazit vše otevře celý katalog. Statická ukázka neodesílá osobní údaje. Produkty, ceny a texty jsou návrhové. Prototyp nepřijímá objednávky ani platby a není připravený pro ostrý prodej.
 
 Před prodejem je potřeba doplnit skutečný katalog a fotografie, provozovatele a právní texty, backend objednávek, sklad, dopravu a platební bránu. Ceny a skladovou dostupnost musí při objednávce ověřovat server.
 

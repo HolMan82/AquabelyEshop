@@ -8,7 +8,7 @@ test('sizes remain separate and repeated additions update totals', () => {
   cart = addItem(cart, 'wave', 'S');
   assert.equal(cart.length, 2);
   assert.equal(cart[0].quantity, 2);
-  assert.equal(total(cart), 3870);
+  assert.equal(total(cart), 2247);
 });
 test('invalid saved products, sizes and quantities are discarded', () => {
   assert.deepEqual(validCart([null, {id:'missing',size:'S',quantity:1},{id:'wave',size:'bad',quantity:1},{id:'wave',size:'S',quantity:-1},{id:'wave',size:'S',quantity:1}]), [{id:'wave',size:'S',quantity:1}]);

@@ -78,4 +78,4 @@ foreach ($catalog as $i => $data) {
     }
 }
 update_option('bella_catalog_initialized', true);
-WP_CLI::success('Initialized seven demo products, size variations, account, cart, checkout and test-only payment.');
+WP_CLI::success('Initialized twelve demo products, size variations, account, cart, checkout and test-only payment.');

@@ -1,20 +1,26 @@
 export const products = [
-  { id: 'wave', name: 'Plavky Wave', category: 'Plavky', tag: 'Oblíbené', price: 1290, color: 'Petrolejová', sizes: ['XS', 'S', 'M', 'L', 'XL'], art: 'suit', shade: '#0856a2', description: 'Jednodílné tréninkové plavky s otevřenými zády. Navržené pro volnost pohybu a každodenní chvíle ve vodě.' },
-  { id: 'bloom', name: 'Plavky Bloom', category: 'Plavky', tag: 'Novinka', price: 1490, color: 'Korálová', sizes: ['XS', 'S', 'M', 'L'], art: 'suit', shade: '#d67c71', description: 'Výrazná barva, čistý střih a pohodlí při každém záběru. Plavky pro trénink i radost z plavání.' },
-  { id: 'cap', name: 'Čepice Flow', category: 'Doplňky', tag: '', price: 290, color: 'Šalvějová', sizes: ['Univerzální'], art: 'cap', shade: '#37c2e5', description: 'Pružná silikonová čepice v jemném odstínu. Jednoduchý doplněk do každé plavecké tašky.' },
-  { id: 'towel', name: 'Ručník Soft', category: 'Plavecké pomůcky', tag: 'Na každý trénink', price: 690, color: 'Písková', sizes: ['70 × 140 cm'], art: 'towel', shade: '#c0a78b', description: 'Měkký ručník s poutkem v přírodním odstínu. Na okraj bazénu, na pláž i na cestu domů.' },
-  { id: 'goggles', name: 'Brýle Clear', category: 'Plavecké brýle', tag: '', price: 590, color: 'Kouřová', sizes: ['Univerzální'], art: 'goggles', shade: '#087ebc', description: 'Tréninkové brýle s nastavitelným páskem a měkkým těsněním pro pohodlí ve vodě.' },
-  { id: 'nose', name: 'Klip na nos Aqua', category: 'Klipy na nos', tag: 'Pro akvabely', price: 190, color: 'Modrá', sizes: ['Univerzální'], art: 'nose', shade: '#0789c7', description: 'Klip na nos pro tréninky synchronizovaného plavání. Ukázkový produkt; skutečné provedení upřesníme před prodejem.' },
-  { id: 'bag', name: 'Taška Everyday', category: 'Doplňky', tag: '', price: 890, color: 'Krémová', sizes: ['24 l'], art: 'bag', shade: '#c5b69b', description: 'Prostorná taška na všechno, co patří k vašemu tréninku. S dlouhými uchy pro pohodlné nošení.' }
+  { id:'nose',name:'Kovový klip na nos',category:'Klipy na nos',tag:'Bestseller',price:89,color:'Růžové zlato',sizes:['Univerzální'],art:'nose',shade:'#bc9383',type:'Kovový',description:'Klip na nos pro tréninky uměleckého plavání. Ukázkový produkt; skutečné provedení upřesníme před prodejem.' },
+  { id:'cap',name:'Bílá silikonová čepice',category:'Plavecké čepice',tag:'',price:179,color:'Bílá',sizes:['Univerzální'],art:'cap',shade:'#e3e8ec',type:'Silikonová',description:'Klasická bílá čepice pro plavecký trénink. Jemný čistý vzhled a místo v každé plavecké tašce.' },
+  { id:'wave',name:'Černé plavky v celku',category:'Plavky',tag:'Novinka',price:749,color:'Černá',sizes:['116','128','140','152','164','S','M','L'],art:'suit',shade:'#242b35',type:'Jednodílné',description:'Jednodílné černé plavky pro trénink a závodní figury. Střih a přesné vlastnosti doplníme podle finální nabídky výrobce.' },
+  { id:'gelatin',name:'Želatina na vlasy',category:'Vlasové pomůcky',tag:'',price:189,color:'Přírodní',sizes:['100 g'],art:'jar',shade:'#d0c5b2',type:'Styling',description:'Pomůcka pro přípravu soutěžního účesu akvabel. Ukázkové balení; složení a použití doplníme před zahájením prodeje.' },
+  { id:'goggles',name:'Plavecké brýle',category:'Plavecké brýle',tag:'',price:349,color:'Modrá',sizes:['Univerzální'],art:'goggles',shade:'#126c9d',type:'Tréninkové',description:'Plavecké brýle s nastavitelným páskem pro pravidelný trénink. Skutečnou specifikaci potvrdíme u finálního produktu.' },
+  { id:'pins',name:'Sada pinetek a gumiček',category:'Vlasové pomůcky',tag:'Sada',price:99,color:'Černá',sizes:['Sada'],art:'pins',shade:'#303541',type:'Doplňky k účesu',description:'Malé nezbytnosti pro pevný a upravený soutěžní účes. Návrhová sada pinetek a gumiček.' },
+  { id:'textile-cap',name:'Bílá textilní čepice',category:'Plavecké čepice',tag:'Novinka',price:129,color:'Bílá',sizes:['Univerzální'],art:'cap',shade:'#e9e8e5',type:'Textilní',description:'Textilní plavecká čepice v bílém provedení. Ukázkový produkt pro navrhovaný katalog.' },
+  { id:'child-cap',name:'Bílá silikonová čepice dětská',category:'Plavecké čepice',tag:'',price:159,color:'Bílá',sizes:['Dětská'],art:'cap',shade:'#dce7ed',type:'Silikonová',description:'Dětská varianta plavecké čepice. Přesné rozměry a vhodný věk potvrdíme u skutečného zboží.' },
+  { id:'board',name:'Tréninková plavecká deska',category:'Tréninkové pomůcky',tag:'',price:299,color:'Modrá',sizes:['Univerzální'],art:'board',shade:'#0596ca',type:'Tréninkové',description:'Pomůcka pro soustředěný nácvik plavecké techniky. Návrhový produkt pro tréninkovou kolekci.' },
+  { id:'bloom',name:'Modré tréninkové plavky',category:'Plavky',tag:'',price:849,color:'Modrá',sizes:['XS','S','M','L'],art:'suit',shade:'#0878b5',type:'Jednodílné',description:'Modré jednodílné plavky pro pravidelný trénink. Ukázková barevná varianta připravovaného sortimentu.' },
+  { id:'towel',name:'Ručník Aqua',category:'Doplňky',tag:'',price:399,color:'Modrá',sizes:['70 × 140 cm'],art:'towel',shade:'#8acfe6',type:'Ručníky',description:'Měkký ručník v jemné modré pro chvíle mezi tréninky. Ukázkový produkt.' },
+  { id:'bag',name:'Plavecká taška',category:'Doplňky',tag:'',price:590,color:'Bílá',sizes:['24 l'],art:'bag',shade:'#cedee9',type:'Tašky',description:'Taška na výbavu pro tréninky i závody. Rozměry a materiál doplníme u skutečné nabídky.' }
 ];
-export const money = value => new Intl.NumberFormat('cs-CZ', { style: 'currency', currency: 'CZK', maximumFractionDigits: 0 }).format(value);
+export const categories = ['Plavky','Plavecké čepice','Klipy na nos','Plavecké brýle','Vlasové pomůcky','Tréninkové pomůcky','Doplňky'];
+export const money = value => new Intl.NumberFormat('cs-CZ',{style:'currency',currency:'CZK',maximumFractionDigits:0}).format(value);
 export function validCart(value) {
   if (!Array.isArray(value)) return [];
   return value.filter(item => item && products.some(p => p.id === item.id && p.sizes.includes(item.size)) && Number.isInteger(item.quantity) && item.quantity > 0 && item.quantity <= 99);
 }
-export const total = cart => cart.reduce((sum, item) => sum + (products.find(p => p.id === item.id)?.price || 0) * item.quantity, 0);
-export function addItem(cart, id, size) {
-  if (!products.some(p => p.id === id && p.sizes.includes(size))) return cart;
-  const existing = cart.find(item => item.id === id && item.size === size);
-  return existing ? cart.map(item => item === existing ? { ...item, quantity: Math.min(99, item.quantity + 1) } : item) : [...cart, { id, size, quantity: 1 }];
+export const total = cart => cart.reduce((sum,item) => sum + (products.find(p=>p.id===item.id)?.price || 0)*item.quantity,0);
+export function addItem(cart,id,size) {
+  if(!products.some(p=>p.id===id&&p.sizes.includes(size)))return cart;
+  const existing=cart.find(item=>item.id===id&&item.size===size);
+  return existing?cart.map(item=>item===existing?{...item,quantity:Math.min(99,item.quantity+1)}:item):[...cart,{id,size,quantity:1}];
 }

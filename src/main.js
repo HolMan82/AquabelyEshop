@@ -1,94 +1,91 @@
-import './style.css';
-import './reference.css';
+import './storefront.css';
 import { brandAssets } from './brand-assets.js';
-import { products, money, validCart, total, addItem } from './shop.js';
-
-const assetUrl = file => `${import.meta.env.BASE_URL}${file}`;
-const brandLogo = brandAssets.logo ? `<img src="${assetUrl(brandAssets.logo)}" alt="BellaAquaBella">` : '<span class="brand-wordmark">Bella<span>Aqua</span>Bella</span>';
-
-const icons = {
-  user: '<circle cx="12" cy="7" r="3.5"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/>',
-  search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
-  suit: '<path d="M7 3h3l1 6h2l1-6h3v8l2 7-4 4-3-4-3 4-4-4 2-7Z"/>',
-  goggles: '<path d="M2 10q-1-7 4-6h12q5 0 4 7M2 10h7l-1 6q-5 3-6-2Zm13 0h7v4q-1 5-7 2Zm-6 2q3-3 6 0"/>',
-  nose: '<path d="m7 20-2-10a7 7 0 0 1 14 0l-2 10M5 19l3-1m8 0 3 1"/>',
-  towel: '<path d="m6 2 14 2-3 18-14-2Zm-2 15 14 2M6 5l11 1"/>',
-  star: '<path d="m12 2 3 7 8 1-6 5 2 8-7-4-7 4 2-8-6-5 8-1Z"/>',
-  diamond: '<path d="m2 7 5-5h10l5 5-10 15Zm0 0h20M7 2l5 20 5-20M7 7l5-5 5 5"/>',
-  lotus: '<path d="M12 21C4 15 9 4 12 2c3 2 8 13 0 19Zm0 0C3 21 1 13 2 8c6 1 10 6 10 13Zm0 0c9 0 11-8 10-13-6 1-10 6-10 13Z"/>',
-  leaf: '<path d="M3 21 20 3M6 18C-2 8 11 3 21 2c-1 10-6 23-15 16Z"/>',
-  bag: '<path d="M5 8h14l1 13H4L5 8Z"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/>',
-  arrow: '<path d="M4 12h16m-6-6 6 6-6 6"/>',
-  wave: '<path d="M2 9c4-6 6 6 10 0s6 6 10 0M2 16c4-6 6 6 10 0s6 6 10 0"/>',
-  heart: '<path d="M20 5c-3-3-7 0-8 2-1-2-5-5-8-2-5 5 8 15 8 15S25 10 20 5Z"/>',
-  box: '<path d="m3 7 9-5 9 5v11l-9 4-9-4V7Zm0 0 9 5 9-5M12 12v10M7 4l9 5"/>'
-};
-const icon = name => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name]}</svg>`;
-function artwork(p) {
-  const shapes = {
-    suit: '<path d="M89 40h22l10 52q19 18 38 0l10-52h22l-1 76 12 76-28 45-34-39-34 39-28-45 12-76Z"/><path class="seam" d="m99 43 7 59q34 32 68 0l7-59M80 188q30-3 60 10 30-13 60-10"/>',
-    cap: '<path d="M52 177C35 42 230 27 229 177q-85 31-177 0Z"/><path class="seam" d="M60 169q80 25 160 0M143 62q-48 26-51 98"/>',
-    towel: '<path d="m76 44 132 13-22 185-132-13Z"/><path class="seam" d="m70 193 119 12M68 204l119 12M85 62l100 10"/><path d="m55 230-2 14m16-12-2 14m16-12-2 14m16-12-2 14m16-12-2 14m16-12-2 14m16-12-2 14m16-12-2 14m16-12-2 14" stroke="currentColor" fill="none"/>',
-    goggles: '<path d="M44 117q-32-77 32-64l130 12q55 9 23 70" fill="none" stroke="currentColor" stroke-width="8"/><path d="m33 112 88 4-8 65q-65 20-80-25Zm126 6 88 7-8 43q-30 40-84 13Z"/><path d="M121 137q20-19 36 2" fill="none" stroke="currentColor" stroke-width="10"/>',
-    nose: '<path d="M90 190 78 110q-5-70 62-70t62 70l-12 80" fill="none" stroke="currentColor" stroke-width="16"/><ellipse cx="89" cy="190" rx="23" ry="35"/><ellipse cx="191" cy="190" rx="23" ry="35"/>',
-    bag: '<path d="M62 101h156l-10 128H72Z"/><path d="M102 112V68q38-44 76 0v44" fill="none" stroke="currentColor" stroke-width="12"/><path class="seam" d="M77 115v100h116M128 167h26"/>'
-  };
-  return `<svg class="product-art" style="color:${p.shade}" viewBox="0 0 280 280" role="img" aria-label="Ilustrace: ${p.name}"><g fill="currentColor">${shapes[p.art]}</g></svg>`;
+import { icon, artwork } from './artwork.js';
+import { products, categories, money, validCart, total, addItem } from './shop.js';
+const url = file => `${import.meta.env.BASE_URL}${file}`;
+const logo = brandAssets.logo ? `<img src="${url(brandAssets.logo)}" alt="BellaAquaBella">` : '<span class="brand-wordmark">Bella<span>Aqua</span>Bella</span>';
+let cart=[],favorites=[];
+try { cart=validCart(JSON.parse(localStorage.getItem('aquabely-cart')||'[]')); } catch {}
+try { const saved=JSON.parse(localStorage.getItem('bella-favorites')||'[]'); if(Array.isArray(saved)) favorites=saved.filter(id=>products.some(p=>p.id===id)); } catch {}
+let showAll=false;
+let category='Vše',search='',sort='recommended',onlyFavorites=false,filterTypes=new Set(),filterColors=new Set(),maxPrice=1500,activeProduct=null,slide=0;
+const sampleByCategory = ['wave','cap','nose','goggles','pins','board'];
+const benefits = [['diamond','Kvalita a bezpečí'],['heart','Podpora pro akvabely'],['wave','Specializovaný sortiment'],['lotus','Elegantní design'],['leaf','Udržitelnost']];
+const heroSlides = [
+ ['Vše pro','akvabely','Plavky, pomůcky, doplňky<br>a mnohem více.'],
+ ['Elegantní vybavení','pro silné výkony','Od prvního tréninku<br>až po společné závodní chvíle.'],
+ ['Čistá voda.','Krásné výkony.','Najděte výbavu<br>pro svůj oblíbený sport.']
+];
+document.querySelector('#app').innerHTML=`
+ <div class="topline"><span>Specializovaný obchod pro svět akvabel</span><span>Ukázkový e-shop · Objednávky zatím nepřijímáme</span></div>
+ <header class="site-header"><a class="logo" href="#" aria-label="BellaAquaBella úvod">${logo}<small>VŠE PRO AKVABELY</small></a><form class="header-search" role="search"><input id="search" type="search" placeholder="Napište, co hledáte…" aria-label="Hledat produkty"><button aria-label="Vyhledat">${icon('search')}</button></form><div class="header-actions"><button id="open-account" aria-label="Můj účet">${icon('user')}<small>Účet</small></button><button id="open-favorites" aria-label="Oblíbené produkty">${icon('heart')}<small>Oblíbené</small><b id="favorite-count">0</b></button><button id="open-cart" aria-label="Otevřít košík">${icon('bag')}<small>Košík</small><b id="cart-count">0</b></button></div></header>
+ <nav class="category-navigation" aria-label="Kategorie produktů">${categories.map(c=>`<button data-category="${c}">${c}</button>`).join('')}<a href="#znacky">Značky</a><button data-category="Výhodné balíčky">Výhodné balíčky</button><button class="new-button" data-category="Novinky">Novinky</button></nav>
+ <main>
+ <section class="hero" aria-label="Úvodní nabídka">${brandAssets.hero?`<img class="hero-photo" src="${url(brandAssets.hero)}" alt="Akvabela v modrém bazénu">`:'<div class="hero-water" aria-hidden="true"></div>'}<button class="hero-arrow prev" data-slide="-1" aria-label="Předchozí banner">‹</button><div class="hero-copy" aria-live="polite"><h1><span id="hero-line">Vše pro</span><strong id="hero-title">akvabely</strong></h1><p id="hero-description">Plavky, pomůcky, doplňky<br>a mnohem více.</p><a class="pill" href="#kolekce">Nakupovat ${icon('arrow')}</a></div><div class="hero-points"><div>${icon('diamond')}<p>Vybavení pro akvabely<small>pro trénink i závodní chvíle</small></p></div><div>${icon('box')}<p>Vše na jednom místě<small>od plavek po malé doplňky</small></p></div><div>${icon('heart')}<p>Specializovaný sortiment<small>s láskou k vodě</small></p></div><div>${icon('lotus')}<p>Pro jednotlivce i týmy<small>od prvního společného tempa</small></p></div></div><button class="hero-arrow next" data-slide="1" aria-label="Další banner">›</button><div class="hero-dots">${heroSlides.map((_,i)=>`<button data-dot="${i}" class="${i===0?'active':''}" aria-label="Banner ${i+1}" aria-pressed="${i===0}"></button>`).join('')}</div></section>
+ <section class="category-tiles" aria-label="Vyberte kategorii">${sampleByCategory.map(id=>{const p=products.find(p=>p.id===id);return `<button data-category="${p.category}"><span class="category-art">${artwork(p)}</span><strong>${p.category}</strong><small>Zobrazit →</small></button>`}).join('')}</section>
+ <section class="catalog" id="kolekce"><div class="breadcrumbs"><button data-home="true">Domů</button><span>›</span><span id="crumb-category">Všechny produkty</span></div><div class="catalog-shell"><aside class="filters"><h3>Upřesnit výběr</h3><fieldset><legend>Typ</legend><div id="type-filters"></div></fieldset><fieldset><legend>Barva</legend><div id="color-filters"></div></fieldset><fieldset><legend>Cena do</legend><label class="price-label" for="price-range"><span>0 Kč</span><output id="price-output">1 500 Kč</output></label><input id="price-range" type="range" min="0" max="1500" step="10" value="1500"></fieldset><button class="reset-filters" id="reset-filters">Zrušit filtry</button></aside><div class="catalog-content"><div class="catalog-heading"><div><p class="eyebrow" id="catalog-eyebrow">VYBRÁNO PRO VÁŠ TRÉNINK</p><h2 id="catalog-title">Oblíbené produkty</h2><p id="category-description"></p></div><button class="text-link" id="show-all">Zobrazit vše →</button></div><div class="catalog-toolbar"><button class="filter-toggle" id="toggle-filters">☷ Filtry</button><span id="result-count"></span><label>Seřadit podle: <select id="sort"><option value="recommended">Doporučené</option><option value="asc">Od nejlevnějších</option><option value="desc">Od nejdražších</option></select></label></div><div class="product-grid" id="products"></div><p class="catalog-note">Ukázkové produkty a ceny · Produktové ilustrace · Žádné skutečné platby</p></div></div></section>
+ <section class="promo"><div><h2>Elegantní vybavení<br>pro silné výkony</h2><button class="pill" data-category="Plavky">Prohlédnout kolekci ${icon('arrow')}</button></div><div class="promo-points"><p>${icon('user')} Pro akvabely všech věkových kategorií</p><p>${icon('bag')} Vybavení pro trénink, závody i vystoupení</p><p>${icon('heart')} Osobní přístup a láska k vodě</p></div></section>
+ <section class="value-strip" id="znacky">${benefits.map(([i,t])=>`<div>${icon(i)}<span>${t}</span></div>`).join('')}</section>
+ <section class="about"><div><p class="eyebrow">BELLA AQUA BELLA</p><h2>Čistá voda.<br><em>Krásné výkony.</em></h2></div><p>Vytváříme obchod pro svět synchronizovaného plavání. Pro první tréninky, soutěžní účesy i chvíle, kdy každý pohyb patří celému týmu.<br><small>Před spuštěním doplníme skutečný sortiment, kontakty, dopravu a podmínky prodeje.</small></p></section>
+ </main><footer><a class="logo" href="#">${logo}</a><span>Vše pro akvabely. S láskou k vodě.</span><small>© ${new Date().getFullYear()} BellaAquaBella · Ukázkový obchod</small></footer>
+ <dialog id="account-dialog" aria-label="Můj účet"><button class="close" aria-label="Zavřít účet">×</button><p class="eyebrow">MŮJ ÚČET</p><h2>Přihlášení do obchodu</h2><p>Tato veřejná ukázka nepřijímá přihlášení. Účet majitele a správa objednávek budou veřejně dostupné po spuštění obchodu na hostingu.</p></dialog><dialog id="product-dialog" aria-label="Detail produktu"></dialog><dialog id="cart-dialog" aria-label="Nákupní košík"></dialog><div id="toast" role="status" aria-live="polite"></div>`;
+const productDialog=document.querySelector('#product-dialog'),cartDialog=document.querySelector('#cart-dialog');
+function persist(){try{localStorage.setItem('aquabely-cart',JSON.stringify(cart));}catch{}document.querySelector('#cart-count').textContent=cart.reduce((n,p)=>n+p.quantity,0);}
+function syncFavorites(){try{localStorage.setItem('bella-favorites',JSON.stringify(favorites));}catch{}document.querySelector('#favorite-count').textContent=favorites.length;document.querySelectorAll('[data-favorite]').forEach(b=>{const selected=favorites.includes(b.dataset.favorite);b.setAttribute('aria-pressed',String(selected));b.classList.toggle('selected',selected);b.setAttribute('aria-label',`${selected?'Odebrat z oblíbených':'Přidat do oblíbených'}: ${products.find(p=>p.id===b.dataset.favorite).name}`);});}
+function notify(message){const el=document.querySelector('#toast');el.textContent=message;el.classList.add('visible');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.remove('visible'),2800);}
+function baseProducts(){return products.filter(p=>(category==='Vše'||category==='Novinky'&&p.tag==='Novinka'||category==='Výhodné balíčky'&&p.tag==='Sada'||p.category===category)&&(!onlyFavorites||favorites.includes(p.id))&&`${p.name} ${p.color} ${p.category}`.toLocaleLowerCase('cs').includes(search.toLocaleLowerCase('cs')));}
+function renderFilters(){const list=baseProducts();document.querySelector('#type-filters').innerHTML=[...new Set(list.map(p=>p.type))].map(t=>`<label><input type="checkbox" data-filter-type="${t}" ${filterTypes.has(t)?'checked':''}> ${t}</label>`).join('');document.querySelector('#color-filters').innerHTML=[...new Set(list.map(p=>p.color))].map(c=>`<label><input type="checkbox" data-filter-color="${c}" ${filterColors.has(c)?'checked':''}> ${c}</label>`).join('');}
+function renderProducts(){
+ const mode=category!=='Vše'||search!==''||onlyFavorites||showAll;document.body.classList.toggle('catalog-mode',mode);
+ const title=onlyFavorites?'Oblíbené produkty':search?'Výsledky hledání':category==='Vše'?'Oblíbené produkty':category;
+ document.querySelector('#catalog-title').textContent=title;document.querySelector('#crumb-category').textContent=title;
+ document.querySelector('#catalog-eyebrow').textContent=mode?'VYBAVENÍ PRO AKVABELY':'VYBRÁNO PRO VÁŠ TRÉNINK';
+ document.querySelector('#category-description').textContent=category==='Plavecké čepice'?'Bílé čepice pro závodní figury i trénink. Textilní i silikonové varianty.':'';
+ let list=baseProducts().filter(p=>(!filterTypes.size||filterTypes.has(p.type))&&(!filterColors.size||filterColors.has(p.color))&&p.price<=maxPrice);
+ if(sort!=='recommended')list.sort((a,b)=>sort==='asc'?a.price-b.price:b.price-a.price);
+ if(!mode)list=list.slice(0,6);
+ document.querySelector('#result-count').textContent=`${list.length} ${list.length===1?'produkt':list.length>1&&list.length<5?'produkty':'produktů'}`;
+ document.querySelector('#products').innerHTML=list.length?list.map(p=>`<article class="product-card"><div class="product-image"><button class="product-image-link" data-product="${p.id}" aria-label="Zobrazit ${p.name}">${artwork(p)}</button>${p.tag?`<span class="tag ${p.tag==='Novinka'?'blue':''}">${p.tag}</span>`:''}<button class="favorite" data-favorite="${p.id}" aria-label="Přidat do oblíbených: ${p.name}" aria-pressed="false">${icon('heart')}</button></div><div class="product-info"><button class="product-name" data-product="${p.id}">${p.name}</button><p class="product-meta">${p.type} · ${p.color}</p><strong>${money(p.price)}</strong><button class="add-button" data-quick-add="${p.id}">${p.sizes.length>1?'Vybrat velikost':'Do košíku'}</button></div></article>`).join(''):'<div class="empty"><h3>Tady zatím nic není.</h3><p>Zkuste změnit hledání nebo zrušit filtry.</p><button class="primary" id="empty-reset">Zobrazit všechny produkty</button></div>';
+ syncFavorites();
 }
-let cart = [];
-try { cart = validCart(JSON.parse(localStorage.getItem('aquabely-cart') || '[]')); } catch {}
-let category = 'Vše';
-let query = '';
-let sort = 'featured';
-document.querySelector('#app').innerHTML = `
-  <header class="header"><a class="logo" href="#" aria-label="BellaAquaBella úvod">${brandLogo}</a><div class="header-actions"><button class="icon-button" id="open-search" aria-label="Hledat produkty">${icon('search')}</button><button class="icon-button" id="open-account" aria-label="Můj účet">${icon('user')}</button><button class="cart-button" id="open-cart" aria-label="Otevřít košík">${icon('bag')}<b id="cart-count">0</b></button></div></header>
-  <nav class="category-navigation" aria-label="Hlavní navigace">${['Plavky','Plavecké brýle','Klipy na nos','Plavecké pomůcky','Doplňky'].map(c=>`<a href="#kolekce" data-nav-category="${c}">${c}</a>`).join('')}<a href="#znacky">Značky</a></nav>
-  <main><section class="hero reference-hero"><div class="hero-visual">${brandAssets.hero ? `<img src="${assetUrl(brandAssets.hero)}" alt="Akvabela při synchronizovaném plavání" fetchpriority="high">` : '<div class="hero-water" aria-hidden="true"></div>'}</div><div class="hero-copy"><h1>Vše pro<br><strong>akvabely</strong></h1><p>Plavky, pomůcky, doplňky<br>a mnohem více.</p><a class="button" href="#kolekce">Nakupovat</a></div></section>
-  <section class="reference-strip" aria-label="Kategorie a hodnoty značky"><div class="category-icons">${[['Plavky','suit'],['Plavecké brýle','goggles'],['Klipy na nos','nose'],['Plavecké pomůcky','towel'],['Doplňky','bag'],['Oblíbené značky','star']].map(([c,i])=>`<a href="${i==='star'?'#znacky':'#kolekce'}" ${i==='star'?'':`data-nav-category="${c}"`}><span>${icon(i)}</span><small>${c}</small></a>`).join('')}</div><div class="brand-values">${[['Kvalita','diamond'],['Vášeň pro vodu','heart'],['Pro akvabely','wave'],['Elegance','lotus'],['Udržitelnost','leaf']].map(([c,i])=>`<div><span>${icon(i)}</span><small>${c}</small></div>`).join('')}</div></section>
-  <section class="collection section" id="kolekce"><div class="section-heading"><div><p class="eyebrow">VAŠE NOVÁ PLAVECKÁ VÝBAVA</p><h2>Oblíbené pro váš trénink.</h2></div><p>Oblíbené kousky, které s vámi<br>udrží tempo.</p></div><div class="catalog-toolbar"><div class="tabs" aria-label="Kategorie">${['Vše', 'Plavky', 'Plavecké brýle', 'Klipy na nos', 'Plavecké pomůcky', 'Doplňky'].map((c,i) => `<button data-category="${c}" class="${i === 0 ? 'active' : ''}" aria-pressed="${i === 0}">${c}</button>`).join('')}</div><div class="catalog-controls"><input id="search" type="search" placeholder="Hledat kousek…" aria-label="Hledat produkty"><select id="sort" aria-label="Seřadit produkty"><option value="featured">Doporučené</option><option value="asc">Od nejlevnějších</option><option value="desc">Od nejdražších</option></select></div></div><div class="product-grid" id="products"></div><p class="catalog-note">Ukázková kolekce · Ilustrace produktů · Ceny a nabídka jsou návrhové</p></section>
-  <section class="brand-story section" id="znacky"><p class="eyebrow">BELLA AQUA BELLA</p><h2>S láskou k vodě.</h2><p>Plavky, pomůcky a doplňky pro svět akvabel.<br>Pro první tréninky i velké společné chvíle.</p></section>
-  <section class="contact section" id="kontakt"><p class="eyebrow">POJĎME TO VYTVOŘIT SPOLEČNĚ</p><h2>Každá vlna má svůj začátek.</h2><p>Právě si prohlížíte první návrh e-shopu BellaAquaBella.<br>Skutečné produkty, kontakty a dopravu doplníme před otevřením.</p><span class="demo-label">PROTOTYP · OBJEDNÁVKY ZATÍM NEPŘIJÍMÁME</span></section></main>
-  <footer><a class="logo" href="#">${brandLogo}</a><p>Vše pro akvabely. S láskou k vodě.</p><small>© ${new Date().getFullYear()} BellaAquaBella · Návrh e-shopu</small></footer>
-  <dialog id="account-dialog" aria-label="Můj účet"><button class="close" aria-label="Zavřít účet">×</button><h2>Přihlášení do obchodu</h2><p>Veřejná ukázka zatím nepřijímá přihlášení. Účet majitele a správa objednávek budou dostupné po spuštění obchodu.</p></dialog><dialog id="product-dialog" aria-label="Detail produktu"></dialog><dialog id="cart-dialog" aria-label="Nákupní košík"></dialog><div id="toast" role="status" aria-live="polite"></div>`;
-const productDialog = document.querySelector('#product-dialog');
-const cartDialog = document.querySelector('#cart-dialog');
-function renderProducts() {
-  let list = products.filter(p => (category === 'Vše' || p.category === category) && `${p.name} ${p.color}`.toLocaleLowerCase('cs').includes(query.toLocaleLowerCase('cs')));
-  if (sort !== 'featured') list.sort((a,b) => sort === 'asc' ? a.price-b.price : b.price-a.price);
-  document.querySelector('#products').innerHTML = list.length ? list.map(p => `<article class="product-card"><button class="product-image" data-product="${p.id}" aria-label="Zobrazit ${p.name}">${p.tag ? `<span class="tag">${p.tag}</span>` : ''}${artwork(p)}<span class="product-plus" aria-hidden="true">+</span></button><div class="product-info"><div><button class="product-name" data-product="${p.id}">${p.name}</button><p><i style="background:${p.shade}"></i>${p.color}</p></div><strong>${money(p.price)}</strong></div></article>`).join('') : '<p class="empty">Žádný kousek neodpovídá hledání. Zkuste jiný název nebo kategorii.</p>';
+function resetFilters(){filterTypes.clear();filterColors.clear();maxPrice=1500;document.querySelector('#price-range').value='1500';document.querySelector('#price-output').textContent=money(1500);}
+function chooseCategory(value){showAll=value==='Vše';category=value;onlyFavorites=false;search='';document.querySelector('#search').value='';resetFilters();renderFilters();renderProducts();document.querySelector('#kolekce').scrollIntoView({behavior:'smooth'});}
+function showProduct(id){
+ const p=products.find(p=>p.id===id);activeProduct=p;
+ productDialog.innerHTML=`<button class="close" aria-label="Zavřít detail">×</button><div class="detail-breadcrumb">Domů <span>›</span> ${p.category} <span>›</span> ${p.name}</div><div class="detail-layout"><div class="detail-gallery"><div class="gallery-thumbs"><button class="active" data-gallery="full" aria-label="Celá ilustrace">${artwork(p)}</button><button data-gallery="zoom" aria-label="Detail ilustrace">${artwork(p)}</button><button data-gallery="color" aria-label="Barevný odstín"><span style="background:${p.shade}"></span></button></div><div class="detail-art" id="detail-art">${artwork(p)}<span class="illustration-note">Ilustrace produktu</span></div></div><div class="detail-copy"><div class="detail-title"><h2>${p.name}</h2><button class="favorite" data-favorite="${p.id}" aria-label="Přidat do oblíbených: ${p.name}" aria-pressed="false">${icon('heart')}</button></div><p>${p.description}</p><div class="detail-review">☆☆☆☆☆ <span>Zatím bez hodnocení</span></div><div class="detail-pricing"><strong>${money(p.price)}</strong><span>Ukázková nabídka</span></div><form id="add-form"><fieldset class="size-picker"><legend>Vyberte velikost:</legend>${p.sizes.map((s,i)=>`<label><input type="radio" name="size" value="${s}" required ${p.sizes.length===1?'checked':''}><span>${s}</span></label>`).join('')}</fieldset><div class="detail-buy"><div class="detail-quantity"><button type="button" data-detail-delta="-1" aria-label="Snížit množství">−</button><input name="quantity" id="detail-quantity" aria-label="Množství" type="number" min="1" max="99" step="1" value="1" required><button type="button" data-detail-delta="1" aria-label="Zvýšit množství">+</button></div><button class="primary" type="submit">Do košíku</button></div></form><div class="detail-perks"><span>${icon('box')}Vybavení pro trénink</span><span>${icon('heart')}Pro svět akvabel</span><span>${icon('diamond')}Detaily doplníme</span></div></div></div><div class="detail-tabs" role="tablist" aria-label="Informace o produktu">${['Popis','Velikostní tabulka','Materiál','Hodnocení'].map((t,i)=>`<button role="tab" id="detail-tab-${i}" aria-controls="detail-panel" aria-selected="${i===0}" tabindex="${i===0?'0':'-1'}" data-detail-tab="${i}">${t}</button>`).join('')}</div><div id="detail-panel" role="tabpanel" aria-labelledby="detail-tab-0">${p.description}<p class="muted">Ukázkový produkt. Skutečné objednávky zatím nepřijímáme.</p></div>`;
+ productDialog.querySelector('#add-form').addEventListener('submit',e=>{e.preventDefault();const data=new FormData(e.target);const qty=Number(data.get('quantity'));if(!Number.isInteger(qty)||qty<1||qty>99)return;for(let i=0;i<qty;i++)cart=addItem(cart,p.id,data.get('size'));persist();productDialog.close();notify('Produkt je v košíku.');});
+ syncFavorites();productDialog.showModal();
 }
-function persist() {
-  try { localStorage.setItem('aquabely-cart', JSON.stringify(cart)); } catch {}
-  document.querySelector('#cart-count').textContent = cart.reduce((n,item) => n+item.quantity,0);
+function renderCart(){
+ cartDialog.innerHTML=`<button class="close" aria-label="Zavřít košík">×</button><h2>Košík <small>(${cart.reduce((n,p)=>n+p.quantity,0)})</small></h2>${cart.length?`<div class="cart-items">${cart.map((item,index)=>{const p=products.find(p=>p.id===item.id);return `<div class="cart-item"><div class="cart-art">${artwork(p)}</div><div class="cart-item-info"><strong>${p.name}</strong><small>Velikost: ${item.size}</small><div class="quantity"><button data-quantity="${index}" data-delta="-1" aria-label="Ubrat ${p.name}">−</button><span>${item.quantity}</span><button data-quantity="${index}" data-delta="1" aria-label="Přidat ${p.name}" ${item.quantity>=99?'disabled':''}>+</button><button class="remove" data-remove="${index}" aria-label="Odebrat ${p.name}">Odebrat</button></div></div><strong>${money(p.price*item.quantity)}</strong></div>`}).join('')}</div><div class="cart-summary"><div><span>Celkem za zboží</span><span>${money(total(cart))}</span></div><div><span>Doprava</span><span>Bude upřesněna</span></div><div class="cart-total"><strong>Celkem za produkty</strong><strong>${money(total(cart))}</strong></div><p class="cart-disclaimer">Toto je ukázkový košík. Objednávky a platby zatím nejsou dostupné.</p><button class="primary continue">Pokračovat ve výběru</button></div>`:`<div class="empty-cart">${icon('bag')}<h3>Váš košík je zatím prázdný.</h3><p>Vyberte si výbavu pro svůj další trénink.</p><button class="primary continue">Prohlédnout produkty</button></div>`}<div class="cart-help"><h3>Proč nakupovat u nás?</h3><p>${icon('wave')}Specializace na akvabely</p><p>${icon('heart')}Sortiment vybíraný s citem pro sport</p><p>${icon('lotus')}Pro trénink i závodní chvíle</p></div>`;
 }
-function showProduct(id) {
-  const p = products.find(p => p.id === id);
-  productDialog.innerHTML = `<button class="close" aria-label="Zavřít detail">×</button><div class="detail-art">${artwork(p)}</div><div class="detail-copy"><p class="eyebrow">${p.category} / ${p.color}</p><h2>${p.name}</h2><strong class="detail-price">${money(p.price)}</strong><p>${p.description}</p><form id="add-form"><label for="size">Vyberte velikost</label><select name="size" id="size">${p.sizes.map(s=>`<option>${s}</option>`).join('')}</select><button class="button" type="submit">Přidat do košíku ${icon('bag')}</button></form><small>Ukázkový produkt. Prodej zatím není spuštěný.</small></div>`;
-  productDialog.querySelector('#add-form').addEventListener('submit', event => {
-    event.preventDefault(); cart = addItem(cart,p.id,new FormData(event.target).get('size')); persist(); productDialog.close();
-    const toast = document.querySelector('#toast'); toast.textContent = `${p.name} jsou v košíku`; toast.classList.add('visible'); clearTimeout(window.toastTimer); window.toastTimer = setTimeout(()=>toast.classList.remove('visible'),3000);
-  });
-  productDialog.showModal();
-}
-function renderCart() {
-  cartDialog.innerHTML = `<button class="close" aria-label="Zavřít košík">×</button><p class="eyebrow">VAŠE VÝBAVA</p><h2>Nákupní košík</h2>${cart.length ? `<div class="cart-items">${cart.map((item,index)=>{const p=products.find(p=>p.id===item.id);return `<div class="cart-item"><div class="cart-art">${artwork(p)}</div><div class="cart-item-info"><strong>${p.name}</strong><small>${item.size} · ${p.color}</small><div class="quantity"><button data-quantity="${index}" data-delta="-1" aria-label="Ubrat ${p.name}">−</button><span>${item.quantity}</span><button data-quantity="${index}" data-delta="1" aria-label="Přidat ${p.name}" ${item.quantity>=99?'disabled':''}>+</button><button class="remove" data-remove="${index}" aria-label="Odebrat ${p.name}">Odebrat</button></div></div><strong>${money(p.price*item.quantity)}</strong></div>`}).join('')}</div><div class="cart-total"><span>Celkem za produkty</span><strong>${money(total(cart))}</strong></div><p class="cart-disclaimer">Toto je ukázkový košík. Objednávky a platby zatím nejsou dostupné. Doprava bude doplněna před spuštěním obchodu.</p>` : `<div class="empty-cart">${icon('bag')}<h3>Tady to teprve začíná.</h3><p>Vyberte si něco pro svůj příští trénink.</p></div>`}<button class="button continue">Pokračovat ve výběru ${icon('arrow')}</button>`;
-}
-document.addEventListener('click', event => {
-  const product = event.target.closest('[data-product]'); if (product) showProduct(product.dataset.product);
-  const tab = event.target.closest('[data-category]'); if(tab) { category=tab.dataset.category; document.querySelectorAll('[data-category]').forEach(t=>{t.classList.toggle('active',t===tab);t.setAttribute('aria-pressed',String(t===tab));}); renderProducts(); }
-  if(event.target.closest('#open-search')) { document.querySelector('#kolekce').scrollIntoView(); document.querySelector('#search').focus({preventScroll:true}); }
-  if(event.target.closest('#open-account')) document.querySelector('#account-dialog').showModal();
-  const nav = event.target.closest('[data-nav-category]'); if(nav) { category = nav.dataset.navCategory; document.querySelectorAll('[data-category]').forEach(t=>{ t.classList.toggle('active',t.dataset.category===category);t.setAttribute('aria-pressed',String(t.dataset.category===category)); }); renderProducts(); }
-  if(event.target.closest('#open-cart')) { renderCart(); cartDialog.showModal(); }
-  if(event.target.closest('.close, .continue')) event.target.closest('dialog').close();
-  const quantity=event.target.closest('[data-quantity]'); const remove=event.target.closest('[data-remove]');
-  if(quantity || remove) {
-    if(remove) cart.splice(Number(remove.dataset.remove),1);
-    else { const item=cart[Number(quantity.dataset.quantity)];item.quantity=Math.min(99,item.quantity+Number(quantity.dataset.delta));cart=cart.filter(i=>i.quantity>0); }
-    persist();renderCart();
-  }
+function updateSlide(value){slide=(value+heroSlides.length)%heroSlides.length;document.querySelector('#hero-line').textContent=heroSlides[slide][0];document.querySelector('#hero-title').textContent=heroSlides[slide][1];document.querySelector('#hero-description').innerHTML=heroSlides[slide][2];document.querySelectorAll('[data-dot]').forEach(b=>{const selected=Number(b.dataset.dot)===slide;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});}
+document.addEventListener('click',e=>{
+ const button=e.target.closest('button,a');if(!button)return;
+ if(button.dataset.category)chooseCategory(button.dataset.category);
+ if(button.dataset.product)showProduct(button.dataset.product);
+ if(button.dataset.quickAdd){const p=products.find(p=>p.id===button.dataset.quickAdd);if(p.sizes.length>1)showProduct(p.id);else{cart=addItem(cart,p.id,p.sizes[0]);persist();notify('Produkt je v košíku.');}}
+ if(button.dataset.favorite){const id=button.dataset.favorite;favorites=favorites.includes(id)?favorites.filter(v=>v!==id):[...favorites,id];syncFavorites();if(onlyFavorites)renderProducts();}
+ if(button.id==='open-cart'){renderCart();cartDialog.showModal();}
+ if(button.id==='open-account')document.querySelector('#account-dialog').showModal();
+ if(button.id==='open-favorites'){showAll=false;onlyFavorites=!onlyFavorites;category='Vše';search='';document.querySelector('#search').value='';resetFilters();renderFilters();renderProducts();document.querySelector('#kolekce').scrollIntoView({behavior:'smooth'});}
+ if(button.closest('.logo')||button.dataset.home){showAll=false;category='Vše';onlyFavorites=false;search='';document.querySelector('#search').value='';resetFilters();renderFilters();renderProducts();}
+ if(button.closest('.close,.continue'))button.closest('dialog').close();
+ if(button.dataset.quantity!==undefined||button.dataset.remove!==undefined){if(button.dataset.remove!==undefined)cart.splice(Number(button.dataset.remove),1);else{const item=cart[Number(button.dataset.quantity)];item.quantity=Math.min(99,item.quantity+Number(button.dataset.delta));cart=cart.filter(p=>p.quantity>0);}persist();renderCart();}
+ if(button.dataset.detailDelta){const input=document.querySelector('#detail-quantity');input.value=String(Math.max(1,Math.min(99,(Number(input.value)||1)+Number(button.dataset.detailDelta))));}
+ if(button.dataset.gallery){document.querySelectorAll('[data-gallery]').forEach(b=>b.classList.toggle('active',b===button));document.querySelector('#detail-art').className=`detail-art view-${button.dataset.gallery}`;document.querySelector('#detail-art').style.setProperty('--product-color',activeProduct.shade);}
+ if(button.dataset.detailTab!==undefined){const i=Number(button.dataset.detailTab);document.querySelectorAll('[data-detail-tab]').forEach(b=>{const active=b===button;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;});const texts=[`${activeProduct.description}<p class="muted">Ukázkový produkt. Skutečné objednávky zatím nepřijímáme.</p>`,`Dostupné velikosti: ${activeProduct.sizes.join(', ')}. Přesné rozměry výrobce doplníme před zahájením prodeje.`,'Materiál a pokyny k údržbě doplníme u skutečného produktu.','Tento ukázkový produkt zatím nemá žádná zákaznická hodnocení.'];document.querySelector('#detail-panel').innerHTML=texts[i];document.querySelector('#detail-panel').setAttribute('aria-labelledby',button.id);}
+ if(button.dataset.slide)updateSlide(slide+Number(button.dataset.slide));
+ if(button.dataset.dot!==undefined)updateSlide(Number(button.dataset.dot));
+ if(button.id==='reset-filters'){resetFilters();renderFilters();renderProducts();}
+ if(['show-all','empty-reset'].includes(button.id))chooseCategory('Vše');
+ if(button.id==='toggle-filters'){document.querySelector('.filters').classList.toggle('expanded');button.setAttribute('aria-expanded',String(document.querySelector('.filters').classList.contains('expanded')));}
 });
-document.querySelector('#search').addEventListener('input',e=>{query=e.target.value;renderProducts();});
+document.addEventListener('change',e=>{const el=e.target;if(el.dataset.filterType){el.checked?filterTypes.add(el.dataset.filterType):filterTypes.delete(el.dataset.filterType);renderProducts();}if(el.dataset.filterColor){el.checked?filterColors.add(el.dataset.filterColor):filterColors.delete(el.dataset.filterColor);renderProducts();}});
+document.querySelector('#search').addEventListener('input',e=>{search=e.target.value;resetFilters();renderFilters();renderProducts();});
+document.querySelector('.header-search').addEventListener('submit',e=>{e.preventDefault();document.querySelector('#kolekce').scrollIntoView({behavior:'smooth'});});
 document.querySelector('#sort').addEventListener('change',e=>{sort=e.target.value;renderProducts();});
-for(const dialog of [productDialog,cartDialog]) dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
-renderProducts();persist();
+document.querySelector('#price-range').addEventListener('input',e=>{maxPrice=Number(e.target.value);document.querySelector('#price-output').textContent=money(maxPrice);renderProducts();});
+productDialog.addEventListener('keydown',e=>{if(e.target.matches('[role="tab"]')&&['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const buttons=[...productDialog.querySelectorAll('[role="tab"]')],index=buttons.indexOf(e.target);const next=e.key==='Home'?0:e.key==='End'?buttons.length-1:(index+(e.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;buttons[next].click();buttons[next].focus();}});
+for(const dialog of document.querySelectorAll('dialog'))dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
+persist();renderFilters();renderProducts();

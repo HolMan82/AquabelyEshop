@@ -8,8 +8,9 @@ add_action('after_setup_theme', function () {
     register_nav_menus(['primary' => 'Hlavní menu']);
 });
 add_action('wp_enqueue_scripts', function () {
-    wp_enqueue_style('bella-store', get_template_directory_uri() . '/assets/store.css', [], '0.2.0');
-    wp_enqueue_style('bella-reference', get_template_directory_uri() . '/assets/reference.css', ['bella-store'], '0.3.0');
+    wp_enqueue_style('bella-storefront', get_template_directory_uri() . '/assets/storefront.css', [], '0.4.0');
+    wp_enqueue_style('bella-woo', get_template_directory_uri() . '/assets/woo.css', ['bella-storefront'], '0.4.0');
+    wp_enqueue_script('bella-theme', get_template_directory_uri() . '/assets/theme.js', ['jquery','wc-add-to-cart-variation'], '0.4.0', true);
 });
 function bella_logo() {
     if (file_exists(get_template_directory() . '/assets/reference-logo.png')) {
@@ -18,12 +19,12 @@ function bella_logo() {
     return '<span class="brand-wordmark">Bella<span>Aqua</span>Bella</span>';
 }
 function bella_icon($name) {
-    $paths = ['bag' => '<path d="M5 8h14l1 13H4L5 8Z M8 9V6a4 4 0 0 1 8 0v3"/>', 'user' => '<circle cx="12" cy="7" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/>'];
+    $paths = ['bag' => '<path d="M5 8h14l1 13H4L5 8Z M8 9V6a4 4 0 0 1 8 0v3"/>', 'search' => '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>', 'user' => '<circle cx="12" cy="7" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/>'];
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">' . ($paths[$name] ?? '') . '</svg>';
 }
 add_filter('woocommerce_product_get_image', function ($html, $product) {
     $sku = $product->get_sku();
-    if (!$product->get_image_id() && preg_match('/^bella-(wave|bloom|cap|goggles|nose|towel|bag)$/', $sku)) {
+    if (!$product->get_image_id() && preg_match('/^bella-(wave|bloom|cap|goggles|nose|towel|bag|gelatin|pins|textile-cap|child-cap|board)$/', $sku)) {
         return '<img width="400" height="400" class="attachment-woocommerce_thumbnail" src="' . esc_url(get_template_directory_uri() . '/assets/' . substr($sku,6) . '.svg') . '" alt="' . esc_attr($product->get_name()) . '" loading="lazy">';
     }
     return $html;
@@ -70,3 +71,9 @@ function bella_reference_icon($name) {
     ];
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . ($paths[$name] ?? '') . '</svg>';
 }
+
+add_action('woocommerce_after_shop_loop_item', function () {
+    global $product;
+    if (!$product) { return; }
+    echo '<button class="wp-favorite" type="button" data-wp-favorite="' . esc_attr($product->get_id()) . '" data-wp-name="' . esc_attr($product->get_name()) . '" data-wp-url="' . esc_url(get_permalink($product->get_id())) . '" aria-label="Přidat do oblíbených: ' . esc_attr($product->get_name()) . '" aria-pressed="false">' . bella_reference_icon('heart') . '</button>';
+});

@@ -1,6 +1,6 @@
 # BellaAquaBella — WordPress + WooCommerce
 
-Lokální vývojová verze obchodu: vlastní modrá a tyrkysová šablona BeAqua, sedm ukázkových produktů, velikostní varianty, košík, pokladna a skutečná administrace objednávek WooCommerce.
+Lokální vývojová verze obchodu: modrobílá šablona BellaAquaBella podle nového návrhu, dvanáct ukázkových produktů, velikostní varianty, košík, pokladna a skutečná administrace objednávek WooCommerce.
 
 ## Lokální spuštění
 
@@ -47,3 +47,10 @@ Hosting zatím nebyl objednán. GitHub Pages může zobrazovat jen statickou uk�
 Na nový WordPress nahrajte složku `theme/bellaaquabella` jako šablonu, nainstalujte aktuální kompatibilní WooCommerce a oficiální Stripe plugin a přeneste katalog. Docker compose je pouze pro místní vývoj; nepoužívejte jeho nastavení a přístupy v produkci. Před spuštěním doplňte skutečné produkty, sklad, dopravu, daně dle provozovatele, obchodní a reklamační podmínky, soukromí, kontakty, SMTP a češtinu WordPressu/WooCommerce. Současná lokální instalace má anglické systémové texty a české vlastní texty.
 
 Logo BeAqua je rastrový návrh s průhledností, ne finální vektorový podklad pro tisk. Před tiskovou produkcí jej nechte odborně převést do křivek a ověřte dostupnost názvu značky.
+
+
+## Nový vzhled katalogu
+
+Záhlaví obsahuje hledání, účet, oblíbené a košík. Úvod má šest dlaždic kategorií a šest doporučených produktů. Archivy produktů mají boční kategorie a nativní cenový filtr WooCommerce. Velikosti v detailu mají podobu tlačítek, která ovládají původní validované varianty WooCommerce. Oblíbené jsou uložené pouze v daném prohlížeči; nesynchronizují se na zákaznický účet.
+
+Skript `scripts/sync-demo-catalog.php` aktualizuje pouze lokální ukázkový katalog podle nového návrhu: ceny, velikosti, kategorie a 12 ilustračních produktů. Existující objednávky zachovává a mimo prostředí `local` odmítne běžet. Setup provede tuto migraci jednou, poté běžné opakované spuštění katalog nepřepisuje. Stripe zůstává vypnutý v testovacím režimu. Obchod neobsahuje smyšlené zákaznické recenze.
