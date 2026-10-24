@@ -7,7 +7,10 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "test": "node --test"
+    "test": "node --test",
+    "package:theme": "python3 scripts/package_theme.py"
   },
-  "devDependencies": { "vite": "^7.3.1" }
+  "devDependencies": {
+    "vite": "^7.3.1"
+  }
 }

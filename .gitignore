@@ -3,3 +3,5 @@ dist/
 .env
 *.log
 wordpress/.cache/
+public/downloads/*.zip
+public/downloads/*.sha256

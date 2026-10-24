@@ -42,7 +42,7 @@ Pro lokální ověření objednávek je dostupná metoda „Testovací objednáv
 
 ## Pozdější hosting
 
-Hosting zatím nebyl objednán. GitHub Pages může zobrazovat jen statickou ukázku, nikoli WordPress nebo správu objednávek. Pro hotový obchod zvolte WordPress hosting s podporovaným PHP a databází, HTTPS, zálohami a možností obnovy. Docker pro běžný spravovaný WordPress hosting nepotřebujete.
+Doména `bellaaquabella.cz` je již zakoupená a přiřazená ke stávajícímu hostingu Active24. Instalace WordPressu na této doméně a HTTPS zatím nebyly ověřené. GitHub Pages může zobrazovat jen statickou ukázku, nikoli WordPress nebo správu objednávek. Pro hotový obchod zvolte WordPress hosting s podporovaným PHP a databází, HTTPS, zálohami a možností obnovy. Docker pro běžný spravovaný WordPress hosting nepotřebujete.
 
 Na nový WordPress nahrajte složku `theme/bellaaquabella` jako šablonu, nainstalujte aktuální kompatibilní WooCommerce a oficiální Stripe plugin a přeneste katalog. Docker compose je pouze pro místní vývoj; nepoužívejte jeho nastavení a přístupy v produkci. Před spuštěním doplňte skutečné produkty, sklad, dopravu, daně dle provozovatele, obchodní a reklamační podmínky, soukromí, kontakty, SMTP a češtinu WordPressu/WooCommerce. Současná lokální instalace má anglické systémové texty a české vlastní texty.
 
@@ -61,3 +61,17 @@ Skript `scripts/sync-demo-catalog.php` aktualizuje pouze lokální ukázkový ka
 Majitel s rolí administrátora může otevřít **Vzhled → Přizpůsobit → Úvodní banner**. Zde lze vybrat/nahrát fotografii akvabely, volitelné vodní pozadí, změnit oba řádky nadpisu, doprovodný text, text a odkaz tlačítka a ztmavení pod textem. Původní logo se tím nemění. Změny se ukládají tlačítkem **Publikovat**. Použitá úvodní fotografie je generovaná a uložená v šabloně; nevyžaduje žádnou externí obrazovou službu. Po odebrání fotografie zůstává vodní pozadí. Vlastní pozadí je vrstva pod hlavní fotografií a samostatně je vidět po jejím odebrání nebo u jejího okraje.
 
 Lokální PHP nastavení dovoluje obrázky do 8 MB. Produkční hosting může mít jiný limit. Přístupy k této administraci budou veřejně dostupné až po nasazení WordPressu na hosting; GitHub Pages samotné tuto administraci neprovozuje.
+
+
+## Balíček šablony pro hosting
+
+```sh
+npm run package:theme
+npm run build
+```
+
+První příkaz vytvoří `public/downloads/bellaaquabella-theme.zip` a kontrolní součet SHA-256. Archiv obsahuje jen složku šablony, nikoli `.env`, databázi, Docker konfiguraci, lokální účty nebo hesla. Druhý příkaz zahrne balíček do veřejného statického náhledu, odkud jej lze stáhnout.
+
+V nové samostatné instalaci WordPressu na `bellaaquabella.cz` vyberte **Vzhled → Šablony → Instalovat šablonu → Nahrát šablonu** a nahrajte ZIP. Nainstalujte kompatibilní WooCommerce z oficiálního katalogu. Šablona sama nepřenáší produkty ani nastavení databáze; ty připravíme až po zprovoznění cílového WordPressu. Lokální testovací databázi ani místní přihlašovací údaje nekopírujte jako produkční instalaci.
+
+Instalace musí patřit pouze nové doméně, do vlastního webového prostoru a vlastní databáze. Před změnou PHP nebo jiné sdílené volby ověřte, zda se vztahuje pouze na nový web, aby nebyl ovlivněn původní web `atc-astro.eu`. Aktivujte HTTPS pro novou doménu. Není potřeba kupovat další hosting ani žádný tarif WordPress.com.
