@@ -10,3 +10,6 @@ Po získání podkladů je umístěte do `public/branding/`, nastavte schválen�
 
 
 Aktuální návrh byl rozšířen podle poslední uživatelovy předlohy: záhlaví s hledáním a účtem, podrobné kategorie, šest dlaždic, kompaktní karty, oblíbené, detail s tlačítky velikostí a boční košík. Předchozí povolení dokončit veřejnou ukázku bez fotografií nadále platí. Aktuální styly jsou `src/storefront.css` a ve WordPressu `assets/storefront.css` + `assets/woo.css`; staré `reference.css` se již nenačítá. Původní fotografie a logo lze později zapojit přes `src/brand-assets.js` a stejné podklady vložit do šablony. Neoznačujte ilustrační SVG za skutečné produktové fotografie.
+
+
+Fotografie byla později úspěšně vygenerována. Aktuální výchozí banner je `public/branding/hero-swimmer.png`, shodná kopie v šabloně `assets/hero-swimmer.png`. `src/brand-assets.js` ji načítá do statické ukázky. Ve WordPressu ji vybírá nastavení `bella_hero_image`; kompletní ovládání banneru je v `inc/customizer.php`. Předchozí záznamy o nefunkčním generátoru jsou historické. Hlavní logo zůstalo zachované.

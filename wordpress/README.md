@@ -54,3 +54,10 @@ Logo BeAqua je rastrový návrh s průhledností, ne finální vektorový podkla
 Záhlaví obsahuje hledání, účet, oblíbené a košík. Úvod má šest dlaždic kategorií a šest doporučených produktů. Archivy produktů mají boční kategorie a nativní cenový filtr WooCommerce. Velikosti v detailu mají podobu tlačítek, která ovládají původní validované varianty WooCommerce. Oblíbené jsou uložené pouze v daném prohlížeči; nesynchronizují se na zákaznický účet.
 
 Skript `scripts/sync-demo-catalog.php` aktualizuje pouze lokální ukázkový katalog podle nového návrhu: ceny, velikosti, kategorie a 12 ilustračních produktů. Existující objednávky zachovává a mimo prostředí `local` odmítne běžet. Setup provede tuto migraci jednou, poté běžné opakované spuštění katalog nepřepisuje. Stripe zůstává vypnutý v testovacím režimu. Obchod neobsahuje smyšlené zákaznické recenze.
+
+
+## Změna úvodního banneru v administraci
+
+Majitel s rolí administrátora může otevřít **Vzhled → Přizpůsobit → Úvodní banner**. Zde lze vybrat/nahrát fotografii akvabely, volitelné vodní pozadí, změnit oba řádky nadpisu, doprovodný text, text a odkaz tlačítka a ztmavení pod textem. Původní logo se tím nemění. Změny se ukládají tlačítkem **Publikovat**. Použitá úvodní fotografie je generovaná a uložená v šabloně; nevyžaduje žádnou externí obrazovou službu. Po odebrání fotografie zůstává vodní pozadí. Vlastní pozadí je vrstva pod hlavní fotografií a samostatně je vidět po jejím odebrání nebo u jejího okraje.
+
+Lokální PHP nastavení dovoluje obrázky do 8 MB. Produkční hosting může mít jiný limit. Přístupy k této administraci budou veřejně dostupné až po nasazení WordPressu na hosting; GitHub Pages samotné tuto administraci neprovozuje.

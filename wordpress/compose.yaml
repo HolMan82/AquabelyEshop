@@ -32,6 +32,7 @@ services:
         define('DISABLE_WP_CRON', true);
     volumes:
       - site:/var/www/html
+      - ./php/uploads.ini:/usr/local/etc/php/conf.d/bella-uploads.ini:ro
       - ./theme/bellaaquabella:/var/www/html/wp-content/themes/bellaaquabella:ro
       - ./mu-plugins:/var/www/html/wp-content/mu-plugins:ro
   cli:

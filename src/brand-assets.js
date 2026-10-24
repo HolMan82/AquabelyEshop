@@ -1,3 +1,3 @@
-// Optional original image files can be added later without changing the layout.
-// The published version intentionally works without photographs.
-export const brandAssets = { logo: null, hero: null };
+// Optional logo preserves the current wordmark when unset.
+// The generated banner is a local asset, without external image services.
+export const brandAssets = { logo: null, hero: 'branding/hero-swimmer.png' };

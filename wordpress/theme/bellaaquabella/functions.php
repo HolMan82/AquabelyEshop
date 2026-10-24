@@ -1,5 +1,6 @@
 <?php
 if (!defined('ABSPATH')) { exit; }
+require_once get_template_directory() . '/inc/customizer.php';
 add_action('after_setup_theme', function () {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
@@ -8,7 +9,7 @@ add_action('after_setup_theme', function () {
     register_nav_menus(['primary' => 'Hlavní menu']);
 });
 add_action('wp_enqueue_scripts', function () {
-    wp_enqueue_style('bella-storefront', get_template_directory_uri() . '/assets/storefront.css', [], '0.4.0');
+    wp_enqueue_style('bella-storefront', get_template_directory_uri() . '/assets/storefront.css', [], '0.5.0');
     wp_enqueue_style('bella-woo', get_template_directory_uri() . '/assets/woo.css', ['bella-storefront'], '0.4.0');
     wp_enqueue_script('bella-theme', get_template_directory_uri() . '/assets/theme.js', ['jquery','wc-add-to-cart-variation'], '0.4.0', true);
 });
