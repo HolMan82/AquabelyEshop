@@ -84,3 +84,12 @@ Nejprve vytvořte potřebné produktové kategorie přes **Produkty → Kategori
 Na již nainstalovaném webu nejprve nahrajte ZIP nové verze přes **Vzhled → Šablony → Instalovat šablonu → Nahrát šablonu** a potvrďte nahrazení stávající verze. Není nutné šablonu předem mazat. Produkty, produktové kategorie, média a nastavení banneru jsou v databázi a touto aktualizací se nepřepisují. Přímé změny PHP/CSS souborů mimo child theme by při aktualizaci byly nahrazeny.
 
 Lokální integraci lze ověřit příkazem `docker compose -f wordpress/compose.yaml run --rm -T cli eval-file /setup/validate-category-mapping.php`. Test dočasně vytvoří kategorii, ověří přiřazení, přejmenování a vlastní název a obnoví původní nastavení.
+
+
+## Seznam značek (šablona 0.3.0)
+
+Položka **Značky** nyní otevírá skutečný seznam značek WooCommerce. Spravují se přes **Produkty → Značky** a přiřazují se produktům v jejich editaci. Seznam obsahuje název, případné logo/náhled, počet produktů a odkaz na nativní archiv dané značky. Zobrazuje i prázdné značky; bez jakýchkoli značek ukáže informaci a odkaz do obchodu. Hledání funguje i bez diakritiky. Žádné značky ani recenze se automaticky nevymýšlejí nebo nepřidávají do databáze.
+
+Po nahrání aktualizace funguje odkaz ihned, bez zakládání stránky nebo ukládání trvalých odkazů. Používá podporovanou veřejnou taxonomii WooCommerce `product_brand`. Volitelně lze vytvořit stránku se slugem `znacky` a vložit `[bella_brands]`; menu pak automaticky použije její pěknou adresu. Pokud instalace WooCommerce správu značek nenabízí, ověřte její verzi a dostupnost funkce značek před doplňováním dat do jiné taxonomie.
+
+Nový ZIP 0.3.0 obsahuje i předchozí propojení kategorií 0.2.0 a nastavení banneru. Produkty a uložená nastavení se nahráním aktualizace nemění. Statický náhled na GitHub Pages má pouze jasně označený ukázkový seznam; skutečné značky vašeho obchodu načítá až WordPress z databáze hostingu.

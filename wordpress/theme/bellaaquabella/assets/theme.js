@@ -18,3 +18,8 @@
  document.addEventListener('click',event=>{const button=event.target.closest('[data-wp-favorite]');if(button){const id=Number(button.dataset.wpFavorite);favorites=favorites.some(p=>p.id===id)?favorites.filter(p=>p.id!==id):[...favorites,{id,name:button.dataset.wpName,url:button.dataset.wpUrl}];update();}});
  document.getElementById('wp-favorites-open').addEventListener('click',()=>{update();dialog.showModal();});document.getElementById('wp-favorites-close').addEventListener('click',()=>dialog.close());update();
 })();
+document.querySelectorAll('.brand-directory').forEach(directory=>{
+ const input=directory.querySelector('[data-brand-search]');if(!input)return;
+ const normalize=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('cs');
+ input.addEventListener('input',()=>{const query=normalize(input.value);let count=0;directory.querySelectorAll('[data-brand-name]').forEach(card=>{const visible=normalize(card.dataset.brandName).includes(query);card.hidden=!visible;if(visible)count++;});directory.querySelector('.brand-result-count').textContent=`Počet značek: ${count}`;directory.querySelector('.brand-no-results').hidden=count>0;});
+});
