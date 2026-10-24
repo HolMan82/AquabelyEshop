@@ -35,3 +35,33 @@ add_action('customize_register', function ($customizer) {
         $customizer->add_control($key,$args);
     }
 });
+
+add_action('customize_register', function ($customizer) {
+    $customizer->add_section('bella_categories',[
+        'title'=>'Kategorie obchodu',
+        'description'=>'Nejprve vytvořte kategorie v Produkty → Kategorie a přiřaďte do nich produkty. Zde vyberte kategorii pro každou dlaždici a položku menu. Dlaždice i menu používají stejné propojení. Vybraná kategorie zůstane propojená i po přejmenování. Obrázek dlaždice se přebírá z náhledu produktové kategorie.',
+        'priority'=>31,
+        'capability'=>'edit_theme_options',
+    ]);
+    if (!taxonomy_exists('product_cat')) { return; }
+    $choices=[0=>'Automaticky podle původního názvu'];
+    $terms=get_terms(['taxonomy'=>'product_cat','hide_empty'=>false,'orderby'=>'name']);
+    if (is_wp_error($terms)) { return; }
+    foreach ($terms as $term) {
+        $path=[];
+        foreach (array_reverse(get_ancestors($term->term_id,'product_cat','taxonomy')) as $ancestor_id) {
+            $ancestor=get_term($ancestor_id,'product_cat');
+            if ($ancestor && !is_wp_error($ancestor)) { $path[]=$ancestor->name; }
+        }
+        $path[]=$term->name;
+        $choices[$term->term_id]=implode(' / ',$path);
+    }
+    foreach (bella_category_slots() as $key=>$slot) {
+        $id='bella_category_'.$key;
+        $customizer->add_setting($id,['default'=>0,'capability'=>'edit_theme_options','sanitize_callback'=>'bella_sanitize_category_id','transport'=>'refresh']);
+        $customizer->add_control($id,['label'=>$slot['name'].' — propojená kategorie','section'=>'bella_categories','type'=>'select','choices'=>$choices]);
+        $label_id='bella_category_label_'.$key;
+        $customizer->add_setting($label_id,['default'=>'','capability'=>'edit_theme_options','sanitize_callback'=>'sanitize_text_field','transport'=>'refresh']);
+        $customizer->add_control($label_id,['label'=>$slot['name'].' — vlastní název','description'=>'Volitelné. Prázdné pole použije název vybrané produktové kategorie.','section'=>'bella_categories','type'=>'text']);
+    }
+});

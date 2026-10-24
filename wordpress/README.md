@@ -75,3 +75,12 @@ První příkaz vytvoří `public/downloads/bellaaquabella-theme.zip` a kontroln
 V nové samostatné instalaci WordPressu na `bellaaquabella.cz` vyberte **Vzhled → Šablony → Instalovat šablonu → Nahrát šablonu** a nahrajte ZIP. Nainstalujte kompatibilní WooCommerce z oficiálního katalogu. Šablona sama nepřenáší produkty ani nastavení databáze; ty připravíme až po zprovoznění cílového WordPressu. Lokální testovací databázi ani místní přihlašovací údaje nekopírujte jako produkční instalaci.
 
 Instalace musí patřit pouze nové doméně, do vlastního webového prostoru a vlastní databáze. Před změnou PHP nebo jiné sdílené volby ověřte, zda se vztahuje pouze na nový web, aby nebyl ovlivněn původní web `atc-astro.eu`. Aktivujte HTTPS pro novou doménu. Není potřeba kupovat další hosting ani žádný tarif WordPress.com.
+
+
+## Propojení hlavních kategorií (šablona 0.2.0)
+
+Nejprve vytvořte potřebné produktové kategorie přes **Produkty → Kategorie** a v editaci produktů je zaškrtněte. Potom otevřete **Vzhled → Přizpůsobit → Kategorie obchodu**. Každá dlaždice má výběr skutečné WooCommerce kategorie a volitelný vlastní název. Stejné propojení se použije i v horním menu a souvisejícím odkazu kolekce. Výchozí automatické hledání podle původního názvu zůstalo kvůli kompatibilitě. Ručně vybraná kategorie se ukládá svým ID, takže její přejmenování nebo změna URL propojení nerozbije. Prázdný vlastní název přebírá název vybrané kategorie. Obrázek dlaždice se automaticky přebírá z obrázku nastaveného v **Produkty → Kategorie**; bez obrázku zůstává původní ilustrace. Po změnách klikněte **Publikovat**.
+
+Na již nainstalovaném webu nejprve nahrajte ZIP nové verze přes **Vzhled → Šablony → Instalovat šablonu → Nahrát šablonu** a potvrďte nahrazení stávající verze. Není nutné šablonu předem mazat. Produkty, produktové kategorie, média a nastavení banneru jsou v databázi a touto aktualizací se nepřepisují. Přímé změny PHP/CSS souborů mimo child theme by při aktualizaci byly nahrazeny.
+
+Lokální integraci lze ověřit příkazem `docker compose -f wordpress/compose.yaml run --rm -T cli eval-file /setup/validate-category-mapping.php`. Test dočasně vytvoří kategorii, ověří přiřazení, přejmenování a vlastní název a obnoví původní nastavení.

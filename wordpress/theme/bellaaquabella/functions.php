@@ -1,6 +1,7 @@
 <?php
 if (!defined('ABSPATH')) { exit; }
 require_once get_template_directory() . '/inc/customizer.php';
+require_once get_template_directory() . '/inc/categories.php';
 add_action('after_setup_theme', function () {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
@@ -49,12 +50,15 @@ add_filter('woocommerce_get_endpoint_url', function ($url, $endpoint) {
 }, 10, 2);
 
 function bella_category_link($name) {
-    $term = get_term_by('name', $name, 'product_cat');
+    foreach (bella_category_slots() as $key=>$slot) {
+        if ($slot['name'] === $name) { return bella_category_slot($key)['url']; }
+    }
+    $term = get_term_by('name',$name,'product_cat');
     if ($term && !is_wp_error($term)) {
         $url = get_term_link($term);
         if (!is_wp_error($url)) { return $url; }
     }
-    return function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/#kolekce');
+    return function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/');
 }
 function bella_reference_icon($name) {
     $paths = [
